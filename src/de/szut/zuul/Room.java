@@ -1,5 +1,7 @@
 package de.szut.zuul;
 
+import java.util.StringJoiner;
+
 /**
  * Class Room - a room in an adventure game.
  *
@@ -17,12 +19,12 @@ package de.szut.zuul;
 public class Room 
 {
     public String description;
-    public Room northExit;
-    public Room southExit;
-    public Room eastExit;
-    public Room westExit;
-    public Room upExit;
-    public Room downExit;
+    private Room northExit;
+    private Room southExit;
+    private Room eastExit;
+    private Room westExit;
+    private Room upExit;
+    private Room downExit;
 
     /**
      * Create a room described "description". Initially, it has
@@ -35,6 +37,27 @@ public class Room
         this.description = description;
     }
 
+
+    public Room getExit(String direction) {
+        //  IF Anweisungen um den passenden Raum zu finden
+        if (direction.equals("north")) {
+            return northExit;
+        }
+        // TODO....
+        return null;
+    }
+
+    private String exitsToString() {
+        // TODO
+        StringJoiner joiner=new StringJoiner(" ");
+        joiner.add("north");
+        joiner.add("west");
+        joiner.add("up");
+        joiner.add("down");
+        joiner.add("Heidemann");
+
+        return joiner.toString();
+    }
 
     public void setExits(Room north, Room east, Room south, Room west, Room up, Room down)
     {
@@ -68,25 +91,8 @@ public class Room
 
     public void printRoomInformation() {
         System.out.println("You are " + getDescription());
-        System.out.print("Exits: ");
-        if(northExit != null) {
-            System.out.print("north ");
-        }
-        if(eastExit != null) {
-            System.out.print("east ");
-        }
-        if(southExit != null) {
-            System.out.print("south ");
-        }
-        if(westExit != null) {
-            System.out.print("west ");
-        }
-        if(upExit != null) {
-            System.out.print("up ");
-        }
-        if(downExit != null) {
-            System.out.print("down ");
-        }
+        System.out.print("Exits: " + exitsToString());
+
         System.out.println();
     }
 }
