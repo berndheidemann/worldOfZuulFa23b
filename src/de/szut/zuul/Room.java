@@ -1,5 +1,6 @@
 package de.szut.zuul;
 
+import java.util.HashMap;
 import java.util.StringJoiner;
 
 /**
@@ -19,66 +20,41 @@ import java.util.StringJoiner;
 public class Room 
 {
     public String description;
-    private Room northExit;
-    private Room southExit;
-    private Room eastExit;
-    private Room westExit;
-    private Room upExit;
-    private Room downExit;
 
     /**
-     * Create a room described "description". Initially, it has
-     * no exits. "description" is something like "a kitchen" or
-     * "an open court yard".
-     * @param description The room's description.
+     * Im Falle vom marketplace
+     *
+     *  keys        |    values
+     *  "north"          (Room tavern)
+     *  "east"           (Room templePyramid)
+     *  "west"           (Room sacrificialSite)
      */
+    private HashMap<String, Room> exits;
+
+
     public Room(String description) 
     {
+        this.exits=new HashMap<>();
         this.description = description;
     }
 
-
+    //              direction: "north"
     public Room getExit(String direction) {
-        if (direction.equals("north")) return northExit;
-        if (direction.equals("south")) return southExit;
-        if (direction.equals("up")) return upExit;
-        if (direction.equals("down")) return downExit;
-        if (direction.equals("east")) return eastExit;
-        if (direction.equals("west")) return westExit;
-        return null;
+        return exits.get(direction);
     }
 
     private String exitsToString() {
         StringJoiner joiner=new StringJoiner(" ");
-        if (northExit!=null) joiner.add("north");
-        if (southExit!=null) joiner.add("south");
-        if (eastExit!=null) joiner.add("east");
-        if (westExit!=null) joiner.add("west");
-        if (upExit!=null) joiner.add("up");
-        if (downExit!=null) joiner.add("down");
+        for (String key: exits.keySet()) {
+            joiner.add(key);
+        }
         return joiner.toString();
     }
 
-    public void setExits(Room north, Room east, Room south, Room west, Room up, Room down)
-    {
-        if(north != null) {
-            northExit = north;
-        }
-        if(east != null) {
-            eastExit = east;
-        }
-        if(south != null) {
-            southExit = south;
-        }
-        if(west != null) {
-            westExit = west;
-        }
-        if(up!=null) {
-            this.upExit=up;
-        }
-        if(down!=null) {
-            this.downExit=down;
-        }
+
+    //                 "down"               (Room cave)
+    public void setExit(String direction, Room neighbor) {
+        exits.put(direction, neighbor);
     }
 
     /**
