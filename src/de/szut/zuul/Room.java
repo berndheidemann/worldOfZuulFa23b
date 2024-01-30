@@ -39,23 +39,23 @@ public class Room
 
 
     public Room getExit(String direction) {
-        //  IF Anweisungen um den passenden Raum zu finden
-        if (direction.equals("north")) {
-            return northExit;
-        }
-        // TODO....
+        if (direction.equals("north")) return northExit;
+        if (direction.equals("south")) return southExit;
+        if (direction.equals("up")) return upExit;
+        if (direction.equals("down")) return downExit;
+        if (direction.equals("east")) return eastExit;
+        if (direction.equals("west")) return westExit;
         return null;
     }
 
     private String exitsToString() {
-        // TODO
         StringJoiner joiner=new StringJoiner(" ");
-        joiner.add("north");
-        joiner.add("west");
-        joiner.add("up");
-        joiner.add("down");
-        joiner.add("Heidemann");
-
+        if (northExit!=null) joiner.add("north");
+        if (southExit!=null) joiner.add("south");
+        if (eastExit!=null) joiner.add("east");
+        if (westExit!=null) joiner.add("west");
+        if (upExit!=null) joiner.add("up");
+        if (downExit!=null) joiner.add("down");
         return joiner.toString();
     }
 
