@@ -36,7 +36,7 @@ public class Game
      */
     private void createRooms()
     {
-        Room marketsquare, templePyramid, tavern, sacrificialSite, hut, jungle, secretPassage, cave, beach;
+        Room marketsquare, templePyramid, tavern, sacrificialSite, hut, jungle, secretPassage, cave, beach, sorcererChamber, basement;
       
         // create the rooms
         marketsquare = new Room("on the market square");
@@ -48,18 +48,22 @@ public class Game
         secretPassage = new Room("in a secret passage");
         cave = new Room("in a cave");
         beach = new Room("on the beach");
+        sorcererChamber=new Room("in a magical Chamber");
+        basement=new Room("in a dark basement");
+
 
         // initialise room exits
-        marketsquare.setExits(tavern, templePyramid, null, sacrificialSite);
-        templePyramid.setExits(hut, null, null, marketsquare);
-        tavern.setExits(null, hut, marketsquare, null);
-        sacrificialSite.setExits(null, marketsquare, null , null);
-        hut.setExits(null, jungle, templePyramid, tavern);
-        jungle.setExits(null, null, null, hut);
-        secretPassage.setExits(null, null, null, cave);
-        cave.setExits(null, secretPassage, beach, null);
-        beach.setExits(cave, null, null, null);
-
+        marketsquare.setExits(tavern, templePyramid, null, sacrificialSite, null, null);
+        templePyramid.setExits(hut, null, null, marketsquare, sorcererChamber, basement);
+        tavern.setExits(null, hut, marketsquare, null, null, null);
+        sacrificialSite.setExits(null, marketsquare, null , null, null, cave);
+        hut.setExits(null, jungle, templePyramid, tavern, null, null);
+        jungle.setExits(null, null, null, hut, null, null);
+        secretPassage.setExits(null, basement, null, cave, null, null);
+        cave.setExits(null, secretPassage, beach, null, sacrificialSite, null);
+        beach.setExits(cave, null, null, null, null, null);
+        basement.setExits(null, null, null, secretPassage, templePyramid, null);
+        sorcererChamber.setExits(null, null, null, null, null, templePyramid);
         currentRoom = marketsquare;  // start game on marketsquare
     }
 
@@ -91,21 +95,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        System.out.println("You are " + currentRoom.getDescription());
-        System.out.print("Exits: ");
-        if(currentRoom.northExit != null) {
-            System.out.print("north ");
-        }
-        if(currentRoom.eastExit != null) {
-            System.out.print("east ");
-        }
-        if(currentRoom.southExit != null) {
-            System.out.print("south ");
-        }
-        if(currentRoom.westExit != null) {
-            System.out.print("west ");
-        }
-        System.out.println();
+        currentRoom.printRoomInformation();
     }
 
     /**
@@ -180,27 +170,19 @@ public class Game
         if(direction.equals("west")) {
             nextRoom = currentRoom.westExit;
         }
+        if(direction.equals("up")) {
+            nextRoom = currentRoom.upExit;
+        }
+        if(direction.equals("down")) {
+            nextRoom = currentRoom.downExit;
+        }
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
             currentRoom = nextRoom;
-            System.out.println("You are " + currentRoom.getDescription());
-            System.out.print("Exits: ");
-            if(currentRoom.northExit != null) {
-                System.out.print("north ");
-            }
-            if(currentRoom.eastExit != null) {
-                System.out.print("east ");
-            }
-            if(currentRoom.southExit != null) {
-                System.out.print("south ");
-            }
-            if(currentRoom.westExit != null) {
-                System.out.print("west ");
-            }
-            System.out.println();
+            currentRoom.printRoomInformation();
         }
     }
 

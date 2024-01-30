@@ -21,6 +21,8 @@ public class Room
     public Room southExit;
     public Room eastExit;
     public Room westExit;
+    public Room upExit;
+    public Room downExit;
 
     /**
      * Create a room described "description". Initially, it has
@@ -33,15 +35,8 @@ public class Room
         this.description = description;
     }
 
-    /**
-     * Define the exits of this room.  Every direction either leads
-     * to another room or is null (no exit there).
-     * @param north The north exit.
-     * @param east The east east.
-     * @param south The south exit.
-     * @param west The west exit.
-     */
-    public void setExits(Room north, Room east, Room south, Room west) 
+
+    public void setExits(Room north, Room east, Room south, Room west, Room up, Room down)
     {
         if(north != null) {
             northExit = north;
@@ -55,6 +50,12 @@ public class Room
         if(west != null) {
             westExit = west;
         }
+        if(up!=null) {
+            this.upExit=up;
+        }
+        if(down!=null) {
+            this.downExit=down;
+        }
     }
 
     /**
@@ -65,4 +66,27 @@ public class Room
         return description;
     }
 
+    public void printRoomInformation() {
+        System.out.println("You are " + getDescription());
+        System.out.print("Exits: ");
+        if(northExit != null) {
+            System.out.print("north ");
+        }
+        if(eastExit != null) {
+            System.out.print("east ");
+        }
+        if(southExit != null) {
+            System.out.print("south ");
+        }
+        if(westExit != null) {
+            System.out.print("west ");
+        }
+        if(upExit != null) {
+            System.out.print("up ");
+        }
+        if(downExit != null) {
+            System.out.print("down ");
+        }
+        System.out.println();
+    }
 }
