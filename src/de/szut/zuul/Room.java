@@ -57,18 +57,9 @@ public class Room
         exits.put(direction, neighbor);
     }
 
-    /**
-     * @return The description of the room.
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void printRoomInformation() {
-        System.out.println("You are " + getDescription());
-        System.out.print("Exits: " + exitsToString());
-
-        System.out.println();
+    public String getLongDescription() {
+        String response=this.description+"\n";
+        response+="Exits: " + this.exitsToString();
+        return response;
     }
 }
