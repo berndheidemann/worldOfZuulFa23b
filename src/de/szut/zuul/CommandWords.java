@@ -1,5 +1,7 @@
 package de.szut.zuul;
 
+import java.util.StringJoiner;
+
 /**
  * This class is part of the "World of Zuul" application. 
  * "World of Zuul" is a very simple, text based adventure game.  
@@ -15,7 +17,7 @@ public class CommandWords
 {
     // a constant array that holds all valid command words
     private static final String[] validCommands = {
-        "go", "quit", "help"
+        "go", "quit", "help", "look"
     };
 
     /**
@@ -39,5 +41,20 @@ public class CommandWords
         }
         // if we get here, the string was not found in the commands
         return false;
+    }
+
+    public String showAll() {
+        // Hilfsobjekt um Texte zu verknüpfen. Dabei kann man das Trennzeichen angeben
+        StringJoiner joiner=new StringJoiner(" ");
+        // validCommands ist ein Array mit Strings
+
+        // Foreach-Schleife
+        // for ( einzelnes Element: Container)
+        for (String s: validCommands) {
+            // für jedes Element des Containers wird diese Zeile einmal aufgerufen
+            // das einzelne Element ist dann s
+            joiner.add(s);
+        }
+        return joiner.toString();
     }
 }

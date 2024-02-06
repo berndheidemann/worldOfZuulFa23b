@@ -154,7 +154,10 @@ public class Game
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
-        }
+        } else if(commandWord.equals("look")) {
+            look();
+         }
+
 
         return wantToQuit;
     }
@@ -172,7 +175,7 @@ public class Game
         System.out.println("through the jungle. At once there is a glade. On it there a buildings...");
         System.out.println();
         System.out.println("Your command words are:");
-        System.out.println("   go quit help");
+        System.out.println("   " + parser.showCommands());
     }
 
     /** 
@@ -220,5 +223,9 @@ public class Game
 
     private void printRoomInformation() {
         System.out.println(currentRoom.getLongDescription());
+    }
+
+    private void look() {
+        printRoomInformation();
     }
 }
