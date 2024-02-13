@@ -30,12 +30,19 @@ public class Room
      *  "west"           (Room sacrificialSite)
      */
     private HashMap<String, Room> exits;
+    private HashMap<String, Item> items;
 
 
     public Room(String description) 
     {
         this.exits=new HashMap<>();
+        this.items=new HashMap<>();
         this.description = description;
+    }
+
+    public Room putItem(Item newItem) {
+        this.items.put(newItem.getName(), newItem);
+        return this;
     }
 
     //              direction: "north"
@@ -53,13 +60,19 @@ public class Room
 
 
     //                 "down"               (Room cave)
-    public void setExit(String direction, Room neighbor) {
+    public Room setExit(String direction, Room neighbor) {
         exits.put(direction, neighbor);
+        return this;
     }
 
     public String getLongDescription() {
-        String response=this.description+"\n";
-        response+="Exits: " + this.exitsToString();
-        return response;
+        StringJoiner joiner=new StringJoiner("\n");
+        joiner.add(this.description);
+        joiner.add("Exits: " + this.exitsToString());
+        joiner.add("Items in this room:");
+        for(Item item: this.items.values()) {
+            joiner.add(item.toString());
+        }
+        return joiner.toString();
     }
 }

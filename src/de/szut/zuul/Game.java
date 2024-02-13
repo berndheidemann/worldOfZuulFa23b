@@ -51,51 +51,75 @@ public class Game
         sorcererChamber=new Room("in a magical Chamber");
         basement=new Room("in a dark basement");
 
+        Item bow, treasure, arrows, plant, cocoa, knife, spear, food, jewelry, muffin;
 
-        // initialise room exits
-
-        // taverne --> east --> hut
-
-        marketsquare.setExit("north",tavern);
-        marketsquare.setExit("east",templePyramid);
-        marketsquare.setExit("west",sacrificialSite);
-
-        templePyramid.setExit("north", hut);
-        templePyramid.setExit("west", marketsquare);
-        templePyramid.setExit("up",sorcererChamber);
-        templePyramid.setExit("down",basement);
-
-        tavern.setExit("south",marketsquare);
-        tavern.setExit("east",hut);
-
-        sacrificialSite.setExit("east",marketsquare);
-        sacrificialSite.setExit("down",cave);
-
-        hut.setExit("east",jungle);
-        hut.setExit("south",templePyramid);
-        hut.setExit("west",tavern);
-
-        jungle.setExit("west",hut);
-
-        secretPassage.setExit("east",basement);
-        secretPassage.setExit("west",cave);
-
-        cave.setExit("east",secretPassage);
-        cave.setExit("south",beach);
-        cave.setExit("up",sacrificialSite);
-
-        beach.setExit("north",cave);
-
-        basement.setExit("west",secretPassage);
-        basement.setExit("up",templePyramid);
-
-        sorcererChamber.setExit("down",templePyramid);
-
-        sorcererChamber.setExit("window", marketsquare);
+        bow = new Item("bow", "a bow made out of wood", 0.5);
+        treasure = new Item("treasure", "a small treasure with coins", 7.5);
+        arrows = new Item("arrows", "a quiver with some kind of arrows", 1.0);
+        plant = new Item("plant", "a healing plant", 0.5);
+        cocoa = new Item("cocoa", "a small tree of cocoa", 5.0);
+        knife = new Item("knife", "a very sharp and big knife", 1.0);
+        spear = new Item("spear", "a spear with its slingshot", 5.0);
+        food = new Item("food", "a plate with hearty meat and corn porridge", 0.5);
+        jewelry =  new Item("jewelry", "a very pretty headdress", 1.0);
+        muffin = new Item("muffin", "a magic muffin", 1.0);
 
 
+        marketsquare
+                .setExit("north", tavern)
+                .setExit("east", templePyramid)
+                .setExit("west", sacrificialSite)
+                .putItem(bow)
+                .putItem(muffin);
 
+        templePyramid
+                .setExit("north", hut)
+                .setExit("west", marketsquare)
+                .setExit("up", sorcererChamber)
+                .setExit("down", basement);
 
+        tavern
+                .setExit("east", hut)
+                .setExit("south", marketsquare)
+                .putItem(food);
+
+        sacrificialSite
+                .setExit("east", marketsquare)
+                .setExit("down", cave)
+                .putItem(knife);
+
+        hut
+                .setExit("east", jungle)
+                .setExit("south", templePyramid)
+                .setExit("west", tavern)
+                .putItem(spear);
+
+        jungle
+                .setExit("west", hut)
+                .putItem(plant)
+                .putItem(cocoa);
+
+        secretPassage
+                .setExit("east", basement)
+                .setExit("west", cave);
+
+        cave
+                .setExit("east", secretPassage)
+                .setExit("south", beach)
+                .setExit("up", sacrificialSite)
+                .putItem(treasure);
+
+        beach
+                .setExit("north", cave);
+
+        basement
+                .setExit("west", secretPassage)
+                .setExit("up", templePyramid)
+                .putItem(jewelry);
+
+        sorcererChamber
+                .setExit("down", templePyramid)
+                .putItem(arrows);
 
         currentRoom = marketsquare;  // start game on marketsquare
     }
