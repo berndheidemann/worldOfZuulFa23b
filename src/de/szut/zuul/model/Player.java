@@ -53,7 +53,7 @@ public class Player {
         return currentWeight;
     }
 
-    void goTo(Room newRoom) {
+    public void goTo(Room newRoom) {
         this.currentRoom=newRoom;
     }
 
