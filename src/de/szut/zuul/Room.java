@@ -1,6 +1,7 @@
 package de.szut.zuul;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.StringJoiner;
 
 /**
@@ -71,8 +72,24 @@ public class Room
         joiner.add("Exits: " + this.exitsToString());
         joiner.add("Items in this room:");
         for(Item item: this.items.values()) {
-            joiner.add(item.toString());
+            joiner.add("   " + item.toString());
         }
         return joiner.toString();
+    }
+
+    private Optional<Item> getItemByName(String name) {
+        Item found=null;
+        for(Item item: this.items.values()) {
+            if (item.getName().equals(name)) {
+                found=item;
+            }
+        }
+        return Optional.ofNullable(found);
+    }
+
+    public Item removeItem(String name) {
+        Item item=getItemByName(name).orElse(null);
+        this.items.remove(item.getName());
+        return item;
     }
 }
