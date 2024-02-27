@@ -1,4 +1,9 @@
-package de.szut.zuul;
+package de.szut.zuul.model;
+
+import de.szut.zuul.exception.ItemNotFoundException;
+import de.szut.zuul.exception.ItemTooHeavyException;
+import de.szut.zuul.model.Item;
+import de.szut.zuul.model.Room;
 
 import java.util.LinkedList;
 import java.util.Optional;
@@ -15,12 +20,11 @@ public class Player {
         this.items=new LinkedList<>();
     }
 
-    public boolean takeItem(Item item) {
-        if(isTakePossible(item)) {
-            return false;
+    public void takeItem(Item item) throws ItemTooHeavyException {
+        if(!isTakePossible(item)) {
+            throw new ItemTooHeavyException("Item too heavy");
         } else {
             this.items.add(item);
-            return true;
         }
     }
     private Optional<Item> getItemByName(String name) {
@@ -32,13 +36,13 @@ public class Player {
         }
         return Optional.ofNullable(found);
     }
-    public Item dropItem(String name) {
-        Item item=getItemByName(name).orElse(null);
+    public Item dropItem(String name) throws ItemNotFoundException {
+        Item item=getItemByName(name).orElseThrow(()->new ItemNotFoundException("You don‘t own this item!" ));
         this.items.remove(item);
         return item;
     }
     private boolean isTakePossible(Item item) {
-        return getCurrentWeight() + item.getWeight() > this.loadCapacity;
+        return getCurrentWeight() + item.getWeight() <= this.loadCapacity;
     }
 
     private double getCurrentWeight() {

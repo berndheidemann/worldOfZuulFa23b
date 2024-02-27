@@ -1,4 +1,10 @@
-package de.szut.zuul;
+package de.szut.zuul.gamecontrol;
+
+import de.szut.zuul.exception.ItemNotFoundException;
+import de.szut.zuul.exception.ItemTooHeavyException;
+import de.szut.zuul.model.Item;
+import de.szut.zuul.model.Player;
+import de.szut.zuul.model.Room;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -272,13 +278,17 @@ public class Game
             System.out.println("Was willst du nehmen?");
             return;
         }
-        Item item=this.player.getCurrentRoom().removeItem(command.getSecondWord());
-        if (item==null) {
-            System.out.println("Der Gegenstand wurde nicht gefunden");
-        }
-        if(!this.player.takeItem(item)) {
-            System.out.println("Du trägst zu viel");
-            this.player.getCurrentRoom().putItem(item);
+        Item itemToTake=null;
+        try {
+            // item aus dem Raum genommen
+            itemToTake = this.player.getCurrentRoom().removeItem(command.getSecondWord());
+            // Item dem Spieler zugewiesen
+            this.player.takeItem(itemToTake);  // wenn hier ein Fehler auftritt, ist das Item aus dem Raum weg
+        } catch(ItemNotFoundException itemNotFoundException) {
+            System.out.println(itemNotFoundException.getMessage());
+        } catch(ItemTooHeavyException itemTooHeavyException) {
+            System.out.println(itemTooHeavyException.getMessage());
+            this.player.getCurrentRoom().putItem(itemToTake);
         }
     }
 
@@ -287,11 +297,11 @@ public class Game
             System.out.println("Was willst du ablegen?");
             return;
         }
-        Item item=this.player.dropItem(command.getSecondWord());
-        if(item!=null) {
+        try {
+            Item item = this.player.dropItem(command.getSecondWord());
             this.player.getCurrentRoom().putItem(item);
-        } else {
-            System.out.println("Der Gegenstand wurde nicht gefunden...");
+        } catch(ItemNotFoundException itemNotFoundException) {
+            System.out.println(itemNotFoundException.getMessage());
         }
     }
 }
