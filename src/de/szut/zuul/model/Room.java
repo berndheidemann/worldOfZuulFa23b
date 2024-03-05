@@ -1,6 +1,7 @@
 package de.szut.zuul.model;
 
 import de.szut.zuul.exception.ItemNotFoundException;
+import de.szut.zuul.model.items.Item;
 
 import java.util.HashMap;
 import java.util.Optional;

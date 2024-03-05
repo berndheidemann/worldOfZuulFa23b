@@ -2,8 +2,9 @@ package de.szut.zuul.model;
 
 import de.szut.zuul.exception.ItemNotFoundException;
 import de.szut.zuul.exception.ItemTooHeavyException;
-import de.szut.zuul.model.Item;
-import de.szut.zuul.model.Room;
+import de.szut.zuul.model.items.Item;
+import de.szut.zuul.state.HealthState;
+import de.szut.zuul.state.Wounded;
 
 import java.util.LinkedList;
 import java.util.Optional;
@@ -14,10 +15,24 @@ public class Player {
     private Room currentRoom;
     private double loadCapacity;
     private LinkedList<Item> items;
+    private HealthState currentHealtState;
 
     public Player() {
         this.loadCapacity=10.0;
         this.items=new LinkedList<>();
+        this.currentHealtState= Wounded.getInstance();
+    }
+
+    public void hurtStrong() {
+        this.currentHealtState=this.currentHealtState.hurtStrong();
+    }
+
+    public void hurtWeak() {
+        this.currentHealtState=this.currentHealtState.hurtWeak();
+    }
+
+    public void heal() {
+        this.currentHealtState=this.currentHealtState.heal();
     }
 
     public void takeItem(Item item) throws ItemTooHeavyException {
@@ -64,6 +79,7 @@ public class Player {
     public String showStatus() {
         StringJoiner joiner=new StringJoiner("\n");
         joiner.add("Status of the player");
+        joiner.add("Healthstatus: " + this.currentHealtState.toString());
         joiner.add("loadCapacity: " + (this.loadCapacity-getCurrentWeight()) + " kg");
         if (!items.isEmpty()) {
             joiner.add("taken items:");
@@ -72,5 +88,9 @@ public class Player {
             }
         }
         return joiner.toString();
+    }
+
+    public void increaseLoadCapacity() {
+        this.loadCapacity+=10;
     }
 }

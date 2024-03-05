@@ -2,9 +2,11 @@ package de.szut.zuul.gamecontrol;
 
 import de.szut.zuul.exception.ItemNotFoundException;
 import de.szut.zuul.exception.ItemTooHeavyException;
-import de.szut.zuul.model.Item;
-import de.szut.zuul.model.Player;
-import de.szut.zuul.model.Room;
+import de.szut.zuul.model.*;
+import de.szut.zuul.model.items.EatableItem;
+import de.szut.zuul.model.items.HealingHerb;
+import de.szut.zuul.model.items.Item;
+import de.szut.zuul.model.items.LoadCapacityBuffFood;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -57,8 +59,8 @@ public class Game
         sorcererChamber=new Room("in a magical Chamber");
         basement=new Room("in a dark basement");
 
-        Item bow, treasure, arrows, plant, cocoa, knife, spear, food, jewelry, muffin;
-
+        Item bow, treasure, arrows, plant, cocoa, knife, spear, food, jewelry;
+        EatableItem muffin, herb;
         bow = new Item("bow", "a bow made out of wood", 0.5);
         treasure = new Item("treasure", "a small treasure with coins", 7.5);
         arrows = new Item("arrows", "a quiver with some kind of arrows", 1.0);
@@ -68,8 +70,8 @@ public class Game
         spear = new Item("spear", "a spear with its slingshot", 5.0);
         food = new Item("food", "a plate with hearty meat and corn porridge", 0.5);
         jewelry =  new Item("jewelry", "a very pretty headdress", 1.0);
-        muffin = new Item("muffin", "a magic muffin", 1.0);
-
+        muffin = new LoadCapacityBuffFood("muffin", "a magic muffin", 1.0);
+        herb = new HealingHerb("herb", "a magic herb", 0.5);
 
         marketsquare
                 .setExit("north", tavern)
@@ -103,7 +105,8 @@ public class Game
         jungle
                 .setExit("west", hut)
                 .putItem(plant)
-                .putItem(cocoa);
+                .putItem(cocoa)
+                .putItem(herb);
 
         secretPassage
                 .setExit("east", basement)
@@ -194,7 +197,10 @@ public class Game
         } else if(commandWord.equals("drop")) {
             dropItem(command);
            showStatus();
-        }
+        } else if(commandWord.equals("eat")) {
+            eat(command);
+            showStatus();
+    }
 
 
         return wantToQuit;
@@ -303,5 +309,27 @@ public class Game
         } catch(ItemNotFoundException itemNotFoundException) {
             System.out.println(itemNotFoundException.getMessage());
         }
+    }
+
+    private void eat(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println("Was willst du essen?");
+            return;
+        }
+        try {
+            Item item = this.player.dropItem(command.getSecondWord());
+            if(item instanceof EatableItem) {
+                EatableItem eatableItem=(EatableItem)item;
+                eatableItem.eat(this.player);
+                System.out.println("lecker...");
+            } else {
+                System.out.println("Das kannst du nicht essen...");
+                this.player.takeItem(item);
+            }
+
+        } catch(ItemNotFoundException | ItemTooHeavyException itemNotFoundException) {
+            System.out.println(itemNotFoundException.getMessage());
+        }
+
     }
 }
